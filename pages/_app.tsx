@@ -1,25 +1,34 @@
 import '@/styles/globals.css'
-import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
-import { Session, SessionContextProvider } from '@supabase/auth-helpers-react'
 import type { AppProps } from 'next/app'
-import { useState, useEffect } from 'react'
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { MyUserContextProvider } from '../utils/useUser'
+import { NextPage } from 'next'
+import React, { ReactElement, ReactNode, useState, useEffect } from 'react'
+import type { Database } from '../types/supabase'
+import Layout from '@/components/Layout'
 
-/* export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
-} */
+export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode
+}
 
-export default function App({
-  Component,
-  pageProps
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
 
-}: AppProps<{initialSession: Session}>) {
 
-  const [supabaseClient]=useState(()=>createBrowserSupabaseClient())
-  return(
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}>
-        <Component {...pageProps}/>
-      </SessionContextProvider>
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient<Database>())
+  useEffect(() => {
+    document.body.classList?.remove('loading')
+    }, [])
+  return (
+    <SessionContextProvider supabaseClient={supabaseClient}>
+      <MyUserContextProvider>
+        <Component {...pageProps} />
+      </MyUserContextProvider>
+    </SessionContextProvider>
   )
 }
+
+

@@ -1,3 +1,84 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier/@typescript-eslint",
+    "prettier/react",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:import/typescript"
+  ],
+  "parser": "@typescript-eslint/parser", 
+  "parserOptions": {
+    "project": "stockproject/tsconfig.json",
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "no-shadow": [
+      "error",
+      {
+        "allow": ["error"]
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": false,
+        "quoteProps": "consistent"
+      }
+    ],
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "no-console": "off",
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "react-hooks/exhaustive-deps": "off",
+    "react/destructuring-assignment": "off",
+    "import/prefer-default-export": "off",
+    "react/jsx-props-no-spreading": "off",
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "arrow-body-style": ["error", "as-needed"],
+    "react/function-component-definition": [
+      2,
+      { "namedComponents": "arrow-function" }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      },
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": "stockproject/tsconfig.json" // Add the path to your tsconfig.json file
+      }
+    }
+  }
 }
