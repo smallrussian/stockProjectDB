@@ -6,7 +6,7 @@ import { MyUserContextProvider } from '../utils/useUser'
 import { NextPage } from 'next'
 import React, { ReactElement, ReactNode, useState, useEffect } from 'react'
 import type { Database } from '../types/supabase'
-import Layout from '@/components/Layout'
+
 
 export type NextPageWithLayout<P = object, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode

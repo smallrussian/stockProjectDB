@@ -5,10 +5,11 @@ type BuyStockModalProps = {
     onClose: () => void;
     onBuy: (symbol: string, shares: number) => void;
     symbol: string ;
+    currentPrice: number;
 }
 
 
-const BuyStockModal = ({isOpen, onClose, onBuy, symbol}: BuyStockModalProps) => {
+const BuyStockModal = ({isOpen, onClose, onBuy, symbol, currentPrice}: BuyStockModalProps) => {
     const [shares, setShares] = useState(0);
     const handleConfirmBuy = () => {
         onBuy(symbol, shares);
@@ -38,7 +39,7 @@ const BuyStockModal = ({isOpen, onClose, onBuy, symbol}: BuyStockModalProps) => 
                             as="h3"
                             className="text-lg font-medium leading-6 text-gray-800"
                         >
-                            Buy {symbol}
+                            Buy {symbol} for ${(shares*currentPrice).toFixed(2)}
                         </Dialog.Title>
                         <div className="mt-2">
                             <p className="text-sm text-gray-500">

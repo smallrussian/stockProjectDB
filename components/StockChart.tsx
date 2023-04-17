@@ -17,9 +17,10 @@ type Props = {
   setCurrentPrice : (price: number) => void;
   handleBuy : (symbol: string, shares: number) => void;
   handleSell : (symbol: string, shares: number) => void;
+  currentPrice: number;
 };
 
-const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell }: Props) => {
+const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell, currentPrice }: Props) => {
   const [isBuyModalOpen , setIsBuyModalOpen] = useState(false);
   
 
@@ -124,7 +125,7 @@ const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell }: Props) =
         >
           Buy
         </button>
-        <BuyStockModal symbol={symbol}isOpen={isBuyModalOpen} onBuy={handleBuy} onClose={handleBuyModalClose} />
+        <BuyStockModal symbol={symbol}isOpen={isBuyModalOpen} onBuy={handleBuy} onClose={handleBuyModalClose} currentPrice={currentPrice} />
         <LineChart
           width={730}
           height={250}

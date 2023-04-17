@@ -3,6 +3,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { TextInput } from "flowbite-react";
 import React, { useState, Fragment } from "react";
 import {CheckIcon} from "@heroicons/react/20/solid";
+import { isEmpty } from "@/utils/helpers";
 
 
 type Props = {
@@ -15,9 +16,10 @@ type Props = {
         }
     }
     cashBalance: number;
+    totalValue: number
 }
 
-const PortfolioTable = ({currentPrice, handleBuy, handleSell, portfolio, cashBalance}: Props) => {
+const PortfolioTable = ({currentPrice, handleBuy, handleSell, portfolio, cashBalance, totalValue}: Props) => {
     const [selectedStock , setSelectedStock] = useState<string>("AAPL");
     const [shareQuantity , setShareQuantity] = useState<number>(0);
     const actions = [
@@ -31,10 +33,8 @@ const PortfolioTable = ({currentPrice, handleBuy, handleSell, portfolio, cashBal
     const handleCheckboxChange = (symbol: string) => {
         setSelectedStock(symbol);
         };
-        
-      const totalValue = Object.entries(portfolio).reduce((acc, [symbol, item]) => {
-        return acc + item.shares * currentPrice;
-      }, 0);
+      
+      
       console.log(portfolio);
         return ( 
         <div className="w-fit">

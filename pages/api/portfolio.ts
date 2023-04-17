@@ -7,25 +7,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         req,
         res
     })
-    const { portfolio, cashBalance, user_id } = req.body // this is the data from the client
+     // this is the data from the client
 
     if (req.method === 'POST') {
-       /* const { data, error } = await supabase
+        const { portfolio, cashBalance, totalValue, user_id } = req.body
+        console.log(portfolio, cashBalance, totalValue, user_id)
+       const { data, error } = await supabase
             .from('portfolios')
-            .upsert({
+            .update({
                 portfolio: portfolio,
                 cash_balance: cashBalance,
-                user_id
-            })
-            .select() */
-        res.status(200).json({posted: true})
+                total_value: totalValue,})
+            .eq('user_id', user_id)
+            .select()
+        res.status(200).json(portfolio)
                 
     }
     if (req.body === 'GET') {
         const { data, error } = await supabase
             .from('portfolios')
             .select('portfolio')
-            .eq('user_id', user_id)
+            
             
         const portfolio = data[0].portfolio
         return res.status(200).json({ portfolio })
