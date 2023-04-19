@@ -5,7 +5,7 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Label } from "flowbite-react";
 import Image from "next/image";
 import { Fragment, useState } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from "next/router";
 
 type Props = {
   isOpen: boolean;
