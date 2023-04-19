@@ -5,6 +5,7 @@ import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Label } from "flowbite-react";
 import Image from "next/image";
 import { Fragment, useState } from "react";
+import { useRouter } from 'next/router';
 
 type Props = {
   isOpen: boolean;
@@ -34,6 +35,7 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [usernameError, setUsernameError] = useState<string | null>(null);
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
+  const router = useRouter();
 
   const handleNewUserClick = () => {
     setIsSignIn(!isSignIn);
@@ -81,6 +83,12 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
     if (error) {
       console.error(error);
     }
+    await supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        console.log("signed in");
+        router.push("/app");
+      }
+    });
   };
   const closeModal = () => {
     setIsOpen(false);

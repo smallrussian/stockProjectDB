@@ -8,6 +8,7 @@ import axios from "axios";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { GetServerSidePropsContext } from "next";
 import { fetchStockPrices } from "@/utils/useIEXCloudAPI";
+import type { User } from "@supabase/auth-helpers-nextjs";
 import Navbar from "@/components/ui/Navbar";
 
 export interface StockPriceMap {
@@ -22,9 +23,10 @@ type Props = {
   portfolioProp: Record<string, PortfolioItem>;
   cash_balance: number;
   total_value: number;
+  user: User;
 };
 
-const App = ({ portfolioProp, cash_balance, total_value }: Props) => {
+const App = ({ portfolioProp, cash_balance, total_value, user }: Props) => {
   const [portfolio, setPortfolio] =
     useState<Record<string, PortfolioItem>>(portfolioProp);
   const [cashBalance, setCashBalance] = useState(cash_balance);
@@ -32,8 +34,7 @@ const App = ({ portfolioProp, cash_balance, total_value }: Props) => {
   const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [currentPrices, setCurrentPrices] = useState<StockPriceMap>({});
   const [searchedSymbol, setSearchedSymbol] = useState<string>("AAPL");
-  const { userDetails } = useUser();
-  const user_id = userDetails?.id;
+
   const fetchPrices = async () => {
     // an empty prices object with a
     const prices: StockPriceMap = {};
@@ -47,6 +48,7 @@ const App = ({ portfolioProp, cash_balance, total_value }: Props) => {
     }
     setCurrentPrices(prices);
   };
+  const { userDetails } = useUser();
   useEffect(() => {
     fetchPrices();
   }, []);
@@ -108,7 +110,7 @@ const App = ({ portfolioProp, cash_balance, total_value }: Props) => {
       cashBalance,
       totalValue,
       // eslint-disable-next-line camelcase
-      user_id
+      user_id: user.id
     });
   }, [portfolio, cashBalance, totalValue]);
   return (
@@ -167,6 +169,7 @@ export const getServerSideProps = async (
   }
   return {
     props: {
+      user: session.user,
       portfolioProp: portfolios?.[0].portfolio,
       cash_balance: portfolios?.[0].cash_balance,
       total_value: portfolios?.[0].total_value
