@@ -6,75 +6,7 @@ import { Badge, Label, TextInput } from 'flowbite-react';
 import Image from 'next/image';
 import {Fragment, useState } from 'react'
 
-async function signInWithGoogle() {
-    console.log('something')
-    const supabase = createBrowserSupabaseClient<Database>()
-    const {error}=await supabase.auth.signInWithOAuth({ 
-        provider: 'google',
-        options: {
-            redirectTo: '/app',
-        }
-    })
-    if (error) {
-        console.error(error)
-    }
-}
 
-const handleSignUp = async (email: string, password: string, username: string) => {
-    const supabase = createBrowserSupabaseClient<Database>()
-    const { error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-            emailRedirectTo: '/app',
-            data: {
-              username,
-            },
-        },
-
-    })
-    if (error) {
-        console.error(error)
-    }
-}
-//auth state change
-const handleSignIn = async (email: string, password: string) => {
-    const supabase = createBrowserSupabaseClient<Database>()
-    const { error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password,
-        
-    })
-    //handle auth state change
-    await supabase.auth.onAuthStateChange((event, session) => {
-        console.log(event, session)
-    })
-    if (error) {
-        console.error(error)
-    }
-}
-
-const signInWithGithub =async ()=> {
-    const supabase = createBrowserSupabaseClient<Database>()
-    const {error} = await supabase.auth.signInWithOAuth({
-        provider: 'github',
-        options: {
-            redirectTo: `${getURL()}/app`,
-        }
-    })
-    if (error) {
-        console.error(error)
-    }
-}
-const signInWithDiscord =async () => {
-    const supabase = createBrowserSupabaseClient<Database>()
-    await supabase.auth.signInWithOAuth({
-        provider: 'discord',
-        options: {
-            redirectTo: 'app',
-        }
-    })
-}
 
 
 type Props = {
@@ -114,6 +46,71 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
   function openModal() {
     setIsOpen(true)
   }
+  async function signInWithGoogle() {
+    console.log('something')
+    const supabase = createBrowserSupabaseClient<Database>()
+    const {error}=await supabase.auth.signInWithOAuth({ 
+        provider: 'google',
+        options: {
+            redirectTo: `${getURL()}/app`},
+    })
+    if (error) {
+        console.error(error)
+    }
+}
+
+  const handleSignUp = async () => {
+    const supabase = createBrowserSupabaseClient<Database>()
+    const { error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            emailRedirectTo: '/app',
+            data: {
+              username: username,
+            },
+        },
+
+    })
+    if (error) {
+        console.error(error)
+    }
+}
+//auth state change
+  const handleSignIn = async ()  => {
+    const supabase = createBrowserSupabaseClient<Database>()
+    const { error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+        
+    })
+    //handle auth state change
+    if (error) {
+        console.error(error)
+    }
+}
+
+  const signInWithGithub =async ()=> {
+    const supabase = createBrowserSupabaseClient<Database>()
+    const {error} = await supabase.auth.signInWithOAuth({
+        provider: 'github',
+        options: {
+            redirectTo: `${getURL()}/app`,
+        }
+    })
+    if (error) {
+        console.error(error)
+    }
+}
+  const signInWithDiscord =async () => {
+    const supabase = createBrowserSupabaseClient<Database>()
+    await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+            redirectTo: `${getURL()}/app}`,
+        }
+    })
+}
 
   if (isSignIn) {
     return (
@@ -179,12 +176,12 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
 
                 <div className="mt-4">
                   <Label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</Label>
-                  <input id="email" name="email" placeholder="Enter email" className='w-full mt-1 py-2 px-3 border border-gray-300 rounded-md' />
+                  <input id="email" name="email" placeholder="Enter email" value={email}onChange={(e)=>setEmail(e.target.value)} className='w-full mt-1 py-2 px-3 border border-gray-300 rounded-md' />
                 </div>
 
                 <div className="mt-4">
                   <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-                  <input type="password" name="password" id="password" placeholder='Enter password' className="w-full mt-1 py-2 px-3 border border-gray-300 rounded-md"/>
+                  <input type="password" name="password" id="password" placeholder='Enter password' value={password} className="w-full mt-1 py-2 px-3 border border-gray-300 rounded-md" onChange={(e)=>setPassword(e.target.value)} />
                 </div>
                 //forget password
                 <div className="mt-2">
@@ -193,7 +190,7 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                     </a>
                 </div>
                 <div className="mt-4">
-                  <button type="button" className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md" onClick={handleSignIn && closeModal}>
+                  <button type="button" onClick={handleSignIn} className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md">
                     Log in
                   </button>
                 </div>
@@ -262,7 +259,7 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                         </div>
                         <div className="mt-4">
                             <Label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</Label>
-                            <input id="username" name="username" placeholder="Enter username" className='w-full mt-1 py-2 px-3 border border-gray-300 rounded-md' 
+                            <input id="username" name="username" placeholder="Enter username" value={username} className='w-full mt-1 py-2 px-3 border border-gray-300 rounded-md'  onChange={(e)=>setUsername(e.target.value)}
                             onBlur={async (e)=>{
                                 const usernameExists = await checkUsernameExists(e.target.value);
                                 if (usernameExists) {
@@ -276,7 +273,7 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                         </div>
                         <div className="mt-4">
                           <Label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</Label>
-                          <input id="email" name="email" placeholder="Enter email" className='w-full mt-1 py-2 px-3 border border-gray-300 rounded-md' />
+                          <input id="email" name="email" placeholder="Enter email" value= {email}className='w-full mt-1 py-2 px-3 border border-gray-300 rounded-md' onChange={(e)=>setEmail(e.target.value)}/>
                         </div>
                         
                         <div className="mt-4">
@@ -290,7 +287,7 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                         </div>
                         
                         <div className="mt-4">
-                          <button type="button" className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md" onClick={handleSignIn()&&closeModal}
+                          <button type="button" onClick={handleSignUp} className="w-full py-2 px-4 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md" 
                           disabled={submitButtonDisabled || password !==confirmedPassword}>
                             Sign Up
                           </button>

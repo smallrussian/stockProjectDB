@@ -28,6 +28,7 @@
     "docker": "^1.0.0",
     "eslint": "^8.38.0",
     "eslint-config-next": "13.2.1",
+    "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-typescript": "^3.5.5",
     "flowbite": "^1.6.5",
     "flowbite-react": "^0.4.3",
