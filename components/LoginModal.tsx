@@ -1,4 +1,5 @@
 import { Database } from '@/types/supabase';
+import { getURL } from '@/utils/helpers';
 import { Dialog, Transition } from '@headlessui/react'
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Badge, Label, TextInput } from 'flowbite-react';
@@ -58,7 +59,7 @@ const signInWithGithub =async ()=> {
     const {error} = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-            redirectTo: '/app',
+            redirectTo: `${getURL()}/app`,
         }
     })
     if (error) {
@@ -117,16 +118,6 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
   if (isSignIn) {
     return (
     <>
-      <div className="fixed inset-0 flex items-center justify-center">
-        <button
-          type="button"
-          onClick={openModal}
-          className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-        >
-          Open dialog
-        </button>
-      </div>
-
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={closeModal}>
           <div className="min-h-screen px-4 text-center">
@@ -222,16 +213,6 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
     } else if (isSignUp) {
         return (
             <>
-              <div className="fixed inset-0 flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={openModal}
-                  className="rounded-md bg-black bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
-                >
-                  Open dialog
-                </button>
-              </div>
-        
               <Transition appear show={isOpen} as={Fragment}>
                 <Dialog as="div" className="fixed inset-0 z-10 overflow-y-auto" onClose={closeModal}>
                   <div className="min-h-screen px-4 text-center">
