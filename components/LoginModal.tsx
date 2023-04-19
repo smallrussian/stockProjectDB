@@ -276,7 +276,7 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                           <Label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</Label>
                           <input id="email" name="email" placeholder="Enter email" value= {email}className='w-full mt-1 py-2 px-3 border border-gray-300 rounded-md' onChange={(e)=>setEmail(e.target.value)}/>
                         </div>
-                        
+                        {/* another push for vercefa-li */}
                         <div className="mt-4">
                           <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
                           <input onChange={(e)=>setPassword(e.target.value)} name="password" id="password" value={password} type="password" placeholder='Enter password' className="w-full mt-1 py-2 px-3 border border-gray-300 rounded-md"/>
