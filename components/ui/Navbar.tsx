@@ -1,20 +1,16 @@
+/* eslint-disable prettier/prettier */
 import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { create } from 'zustand';
 import { Database } from '@/types/supabase'
-import { getServerSideProps } from '../pages/index';
-import { GetServerSideProps, GetServerSidePropsContext, } from 'next'
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/router'
-import { useUser } from '@supabase/auth-helpers-react';
+import { useUser } from '@/utils/useUser'
+import { UserDetails } from '@/types';
 
 type Props = {
-  home?: boolean
-  create_post?: boolean
-  profile?: boolean
-  userDetails: any
+
+  userDetails: UserDetails | null;
 }
 
 
@@ -26,8 +22,8 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
 
-const Navbar = ({home = false, create_post= false, profile=false, userDetails}: Props) => {
-  console.log
+const Navbar = ({userDetails}: Props) => {
+
   const router = useRouter()
   const user = useUser()
   console.log(user)
@@ -45,9 +41,9 @@ const Navbar = ({home = false, create_post= false, profile=false, userDetails}: 
   }
   
   const navigation = [
-    { name: 'Home', href: '/', current: home ? true : false },
-    { name: 'Create Post', href: '/createPost', current: create_post ? true : false },
-    { name: 'Profile', href: '/', current: profile ? true : false },
+    { name: 'Home', href: '/', current: false },
+    { name: 'Create Post', href: '/createPost', current: false },
+    { name: 'Profile', href: '/', current: false},
   ]
   
   return (
@@ -57,7 +53,6 @@ const Navbar = ({home = false, create_post= false, profile=false, userDetails}: 
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-16 items-center justify-between">
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -111,7 +106,7 @@ const Navbar = ({home = false, create_post= false, profile=false, userDetails}: 
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
-                  <div min-h-32>
+                  <div className='min-h-32'>
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
                       <img
@@ -144,7 +139,7 @@ const Navbar = ({home = false, create_post= false, profile=false, userDetails}: 
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            href="/app"
                             className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Settings
@@ -153,7 +148,7 @@ const Navbar = ({home = false, create_post= false, profile=false, userDetails}: 
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <button className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')} onClick={user ? handleLogout: handleLogin}>
+                          <button type='button' className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')} onClick={user ? handleLogout: handleLogin}>
                             {userDetails ? 'Logout' : 'Login'}
                           </button>
                         )}

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { TextInput, Label } from "flowbite-react";
 
-
-
 type Props = {
   onSymbolSubmit: (symbol: string) => void;
 };
@@ -21,13 +19,15 @@ const StockSearch = ({ onSymbolSubmit }: Props) => {
 
   return (
     <form onSubmit={handleFormSubmit} className="flex flex-col">
-      <Label className="fixtext text-white" htmlFor="symbol">Symbol</Label>
+      <Label className="fixtext text-white" htmlFor="symbol">
+        Symbol
+      </Label>
       <TextInput
-        style={{color: "white !important"}}
+        style={{ color: "white !important" }}
         id="symbol"
         name="symbol"
         type="text"
-        sizing = "md"
+        sizing="md"
         value={symbol}
         onChange={handleInputChange}
         placeholder="Enter a stock symbol"

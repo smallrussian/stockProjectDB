@@ -1,0 +1,36 @@
+export type UserDetails = {
+  email: string;
+  id: string /* primary key */;
+  username: string;
+  full_name?: string;
+  avatar_url?: string;
+};
+export type StockItem = {
+  close: number;
+  high: number;
+  low: number;
+  open: number;
+  priceDate: string;
+  symbol: string;
+  volume: number;
+  id: string;
+  key: string;
+  subkey: string;
+  date: string;
+  updated: number;
+  changeOverTime: number;
+  marketChangeOverTime: number;
+  uOpen: number;
+  uClose: number;
+  uHigh: number;
+  uLow: number;
+  uVolume: number;
+  fOpen: number;
+  fClose: number;
+  fHigh: number;
+  fLow: number;
+  fVolume: number;
+  label: string;
+  change: number;
+  changePercent: number;
+};

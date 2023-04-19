@@ -5,26 +5,28 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
+  Legend
 } from "recharts";
-import {Line as NewLine} from 'react-chartjs-2';
-import { useIEXCloudAPI } from "../utils/useIEXCloudAPI";
 import { useEffect, useState } from "react";
+import { useIEXCloudAPI } from "../utils/useIEXCloudAPI";
 import BuyStockModal from "./BuyStockModal";
 
 type Props = {
   symbol: string;
-  setCurrentPrice : (price: number) => void;
-  handleBuy : (symbol: string, shares: number) => void;
-  handleSell : (symbol: string, shares: number) => void;
+  setCurrentPrice: (price: number) => void;
+  handleBuy: (symbol: string, shares: number) => void;
   currentPrice: number;
 };
 
-const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell, currentPrice }: Props) => {
-  const [isBuyModalOpen , setIsBuyModalOpen] = useState(false);
-  
+const StockChart = ({
+  symbol,
+  setCurrentPrice,
+  handleBuy,
+  currentPrice
+}: Props) => {
+  const [isBuyModalOpen, setIsBuyModalOpen] = useState(false);
 
- /*  const LineChart = ({graphData}:any) => {
+  /*  const LineChart = ({graphData}:any) => {
     const chartData = {
       labels: graphData.map((item: { date: any; }) => item.date),
       datasets: [
@@ -48,8 +50,6 @@ const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell, currentPri
       </div>
     )
   } */
-        
-
 
   const handleBuyModalOpen = () => {
     setIsBuyModalOpen(true);
@@ -60,7 +60,7 @@ const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell, currentPri
   //   const API_KEY = process.env.NEXT_SECRET_IEX_CLOUD_API_KEY;
   // const {data, loading, error}: any = undefined
   const [range, setRange] = useState("1m");
-  const { data,  loading, error } = useIEXCloudAPI(symbol, range);
+  const { data } = useIEXCloudAPI(symbol, range);
   // if (loading) return <Spinner />
   // if (error) return <div>Error fetching stock data</div>
   // console.log(data)
@@ -69,7 +69,7 @@ const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell, currentPri
     if (data && data.length > 0) {
       setCurrentPrice(data[data.length - 1].close);
     }
-    }, [data, setCurrentPrice]);
+  }, [data, setCurrentPrice]);
 
   return (
     <>
@@ -126,7 +126,13 @@ const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell, currentPri
         >
           Buy
         </button>
-        <BuyStockModal symbol={symbol}isOpen={isBuyModalOpen} onBuy={handleBuy} onClose={handleBuyModalClose} currentPrice={currentPrice} />
+        <BuyStockModal
+          symbol={symbol}
+          isOpen={isBuyModalOpen}
+          onBuy={handleBuy}
+          onClose={handleBuyModalClose}
+          currentPrice={currentPrice}
+        />
         <LineChart
           width={730}
           height={250}
@@ -156,7 +162,7 @@ export default StockChart;
 export async function getStaticProps() {
   return {
     props: {
-      key: process.env.NEXT_SECRET_IEX_CLOUD_API_KEY,
-    },
+      key: process.env.NEXT_SECRET_IEX_CLOUD_API_KEY
+    }
   };
 }

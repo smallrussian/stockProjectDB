@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { useEffect, useState } from "react";
 import StockChart from "@/components/StockChart";
 import StockSearch from "@/components/StockSearch";
@@ -5,38 +6,41 @@ import PortfolioTable from "@/components/PortfolioTable";
 import { useUser } from "@/utils/useUser";
 import axios from "axios";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { GetServerSidePropsContext} from "next";
+import { GetServerSidePropsContext } from "next";
 import { fetchStockPrices } from "@/utils/useIEXCloudAPI";
 import Navbar from "@/components/ui/Navbar";
 
-export interface StockPriceMap  {
+export interface StockPriceMap {
   [symbol: string]: number;
-};
+}
 
 export type PortfolioItem = {
   symbol: string;
   shares: number;
-}
+};
 type Props = {
   portfolioProp: Record<string, PortfolioItem>;
   cash_balance: number;
   total_value: number;
-}
+};
 
-const App = ({portfolioProp, cash_balance, total_value}: Props) => {
-  const [portfolio, setPortfolio] = useState<Record<string, PortfolioItem>>(portfolioProp);
+const App = ({ portfolioProp, cash_balance, total_value }: Props) => {
+  const [portfolio, setPortfolio] =
+    useState<Record<string, PortfolioItem>>(portfolioProp);
   const [cashBalance, setCashBalance] = useState(cash_balance);
-  const [totalValue , setTotalValue] = useState<number>(total_value);
-  const [currentPrice , setCurrentPrice] = useState<number>(0);
+  const [totalValue, setTotalValue] = useState<number>(total_value);
+  const [currentPrice, setCurrentPrice] = useState<number>(0);
   const [currentPrices, setCurrentPrices] = useState<StockPriceMap>({});
-  const [searchedSymbol , setSearchedSymbol] = useState<string>("AAPL");
-  const {userDetails} = useUser()
-  const user_id = userDetails?.id
+  const [searchedSymbol, setSearchedSymbol] = useState<string>("AAPL");
+  const { userDetails } = useUser();
+  const user_id = userDetails?.id;
   const fetchPrices = async () => {
     // an empty prices object with a
     const prices: StockPriceMap = {};
-    console.log('something')
+    console.log("something");
+    // eslint-disable-next-line no-restricted-syntax
     for (const symbol of Object.keys(portfolio)) {
+      // eslint-disable-next-line no-await-in-loop
       const price = await fetchStockPrices(symbol);
       console.log(`${symbol} is ${price}`);
       prices[symbol] = price;
@@ -44,7 +48,6 @@ const App = ({portfolioProp, cash_balance, total_value}: Props) => {
     setCurrentPrices(prices);
   };
   useEffect(() => {
-    
     fetchPrices();
   }, []);
   useEffect(() => {
@@ -52,9 +55,16 @@ const App = ({portfolioProp, cash_balance, total_value}: Props) => {
       fetchPrices();
     }
   }, [portfolio]);
-  const calculateTotalValue = (portfolio: Record<string, PortfolioItem>, currentPrices: StockPriceMap) => {
+  const calculateTotalValue = (
+    // eslint-disable-next-line no-shadow
+    portfolio: Record<string, PortfolioItem>,
+    // eslint-disable-next-line no-shadow
+    currentPrices: StockPriceMap
+  ) => {
     let total = 0;
+    // eslint-disable-next-line no-restricted-syntax
     for (const symbol of Object.keys(portfolio)) {
+      // eslint-disable-next-line prefer-destructuring
       const shares = portfolio[symbol].shares;
       const price = currentPrices[symbol];
       total += shares * price;
@@ -63,7 +73,7 @@ const App = ({portfolioProp, cash_balance, total_value}: Props) => {
   };
   const handleBuy = (symbol: string, shares: number) => {
     if (!currentPrice ?? currentPrice === null) return;
-  
+
     const newPortfolio = { ...portfolio };
     if (newPortfolio[symbol]) {
       newPortfolio[symbol].shares += shares;
@@ -74,17 +84,15 @@ const App = ({portfolioProp, cash_balance, total_value}: Props) => {
     setCashBalance(cashBalance - currentPrice * shares);
     const newTotalValue = calculateTotalValue(portfolio, currentPrices);
     setTotalValue(cashBalance + newTotalValue);
-    
-    
   };
-  
+
   const handleSell = (symbol: string, shares: number) => {
     if (!currentPrice ?? currentPrice === null) return;
-  
+
     const newPortfolio = { ...portfolio };
     if (newPortfolio[symbol] && newPortfolio[symbol].shares >= shares) {
       newPortfolio[symbol].shares -= shares;
-  
+
       if (newPortfolio[symbol].shares === 0) {
         delete newPortfolio[symbol];
       }
@@ -92,55 +100,76 @@ const App = ({portfolioProp, cash_balance, total_value}: Props) => {
       setCashBalance(cashBalance + currentPrice * shares);
       const newTotalValue = calculateTotalValue(portfolio, currentPrices);
       setTotalValue(cashBalance + newTotalValue);
-      
     }
   };
   useEffect(() => {
-    axios.post('/api/portfolio', { portfolio, cashBalance, totalValue, user_id });
-  }, [portfolio, cashBalance, totalValue])
+    axios.post("/api/portfolio", {
+      portfolio,
+      cashBalance,
+      totalValue,
+      // eslint-disable-next-line camelcase
+      user_id
+    });
+  }, [portfolio, cashBalance, totalValue]);
   return (
     <div>
       <Navbar userDetails={userDetails} />
       <div className="container p-4 mx-auto">
-      
-      <h1 className="text-2xl font-bold">Stock Search</h1>
-      <div className="search">
-        <StockSearch onSymbolSubmit={setSearchedSymbol}/>
-        <StockChart symbol={searchedSymbol} setCurrentPrice={setCurrentPrice} handleBuy={handleBuy} handleSell={handleSell} currentPrice={currentPrice} />
+        <h1 className="text-2xl font-bold">Stock Search</h1>
+        <div className="search">
+          <StockSearch onSymbolSubmit={setSearchedSymbol} />
+          <StockChart
+            symbol={searchedSymbol}
+            setCurrentPrice={setCurrentPrice}
+            handleBuy={handleBuy}
+            currentPrice={currentPrice}
+          />
+        </div>
+        <div>
+          <PortfolioTable
+            handleBuy={handleBuy}
+            handleSell={handleSell}
+            portfolio={portfolio}
+            cashBalance={cashBalance}
+            totalValue={totalValue}
+            currentPrices={currentPrices}
+          />
+        </div>
       </div>
-      <div>
-        <PortfolioTable currentPrice={currentPrice} handleBuy={handleBuy} handleSell={handleSell} 
-        portfolio={portfolio} cashBalance={cashBalance} totalValue={totalValue} currentPrices={currentPrices}/>
-      </div>
-    </div></div>
+    </div>
   );
 };
 export default App;
 
-export const getServerSideProps = async (context: GetServerSidePropsContext ) => {
-  const supabase = createServerSupabaseClient(context)
-  const {data: {session}} = await supabase.auth.getSession()
-
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const supabase = createServerSupabaseClient(context);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
 
   if (!session) {
     return {
       redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
+        destination: "/",
+        permanent: false
+      }
+    };
   }
-  console.log(session.user.id)
-  const {data: portfolios, error} = await supabase
-    .from('portfolios')
-    .select('portfolio, cash_balance, total_value')
-    .eq('user_id', session.user.id)
-    console.log(portfolios)
+  console.log(session.user.id);
+  const { data: portfolios, error } = await supabase
+    .from("portfolios")
+    .select("portfolio, cash_balance, total_value")
+    .eq("user_id", session.user.id);
+  if (error) {
+    console.log(error);
+  }
   return {
     props: {
-      portfolioProp: portfolios[0].portfolio,
-      cash_balance: portfolios[0].cash_balance,
-      total_value: portfolios[0].total_value,
+      portfolioProp: portfolios?.[0].portfolio,
+      cash_balance: portfolios?.[0].cash_balance,
+      total_value: portfolios?.[0].total_value
     }
-  }
-}
+  };
+};
