@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import LoginModal from "@/components/LoginModal";
+import { GetServerSidePropsContext } from "next/types";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { getURL } from "@/utils/helpers";
 
 const LandingPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,3 +36,23 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const supabase = createServerSupabaseClient(context);
+  const {
+    data: { session }
+  } = await supabase.auth.getSession();
+  if (session) {
+    return {
+      redirect: {
+        destination: `${getURL()}/app`,
+        permanent: false
+      }
+    };
+  }
+  return {
+    props: {}
+  };
+};

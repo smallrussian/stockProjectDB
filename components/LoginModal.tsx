@@ -80,15 +80,15 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
       password
     });
     // handle auth state change
-    if (error) {
-      console.error(error);
-    }
     await supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN") {
         console.log("signed in");
         router.push("/app");
       }
     });
+    if (error) {
+      console.error(error);
+    }
   };
   const closeModal = () => {
     setIsOpen(false);
