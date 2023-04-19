@@ -1,7 +1,7 @@
-import { PortfolioItem } from "@/pages";
+import { PortfolioItem } from "@/pages/app";
 import { Listbox, Transition } from "@headlessui/react";
 import { TextInput } from "flowbite-react";
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import {CheckIcon} from "@heroicons/react/20/solid";
 import { isEmpty } from "@/utils/helpers";
 
@@ -17,11 +17,16 @@ type Props = {
     }
     cashBalance: number;
     totalValue: number
+    currentPrices : {
+        [symbol: string]: number;
+    }
 }
 
-const PortfolioTable = ({currentPrice, handleBuy, handleSell, portfolio, cashBalance, totalValue}: Props) => {
+const PortfolioTable = ({currentPrice, handleBuy, handleSell, portfolio, cashBalance, totalValue,
+currentPrices}: Props) => {
     const [selectedStock , setSelectedStock] = useState<string>("AAPL");
     const [shareQuantity , setShareQuantity] = useState<number>(0);
+
     const actions = [
         { id: 1, name: "Buy" },
         { id: 2, name: "Sell" },
@@ -53,7 +58,7 @@ const PortfolioTable = ({currentPrice, handleBuy, handleSell, portfolio, cashBal
                         <tr key={symbol}>
                             <td>{symbol}</td>
                             <td>{item.shares}</td>
-                            <td>${(item.shares * currentPrice).toFixed(2)}</td>
+                            <td>${(item.shares * currentPrices[symbol]).toFixed(2)}</td>
                             <td className="grid">
                                 <input
                                     className="items-center" 
@@ -70,6 +75,7 @@ const PortfolioTable = ({currentPrice, handleBuy, handleSell, portfolio, cashBal
             
         <div className="flex flex-row justify-between items-center mt-4">
         <TextInput
+          style={{color: "white !important"}}
           name="quantity"
           type={"number" || "text"}
           value={shareQuantity}

@@ -2704,7 +2704,7 @@ flatted@^3.1.0:
   resolved "https://registry.npmjs.org/flatted/-/flatted-3.2.7.tgz"
   integrity sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==
 
-flowbite-react@^0.4.2:
+flowbite-react@^0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/flowbite-react/-/flowbite-react-0.4.3.tgz#f754355429bab6b7a19bfb6cf3a37e018d5bab86"
   integrity sha512-WORJdG4G690m+IdBG4Tepevo60MwCJubAP2Ew0rllgeLFbj97frqfWfs4sraTFDNARbyCBT1pH3sEfpyTLrDrQ==

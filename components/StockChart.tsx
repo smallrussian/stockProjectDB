@@ -63,6 +63,7 @@ const StockChart = ({ symbol, setCurrentPrice, handleBuy, handleSell, currentPri
   const { data,  loading, error } = useIEXCloudAPI(symbol, range);
   // if (loading) return <Spinner />
   // if (error) return <div>Error fetching stock data</div>
+  // console.log(data)
 
   useEffect(() => {
     if (data && data.length > 0) {

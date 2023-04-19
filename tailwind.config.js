@@ -6,9 +6,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      textColor: {
-        'gray-900': 'white'
-    },
+      
   }
   },
   plugins: [],

@@ -20,7 +20,6 @@ export const useIEXCloudAPI = (
         );
         setData(response.data);
         setLoading(false);
-        console.log(data);
       } catch (error) {
         setError("it failed");
         setLoading(false);
@@ -30,3 +29,11 @@ export const useIEXCloudAPI = (
   }, [symbol, range]);
   return { data, loading, error };
 };
+
+export const fetchStockPrices = async(symbol: string) => {
+    const {data} = await axios.get(
+        `${BASE_URL}/${symbol}/chart/1w?token=${API_KEY}`
+    );
+    console.log(data)
+    return data[0].close;
+}
