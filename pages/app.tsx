@@ -146,6 +146,7 @@ export default App;
 export const getServerSideProps = async (
   context: GetServerSidePropsContext
 ) => {
+  console.log("its trying");
   const supabase = createServerSupabaseClient(context);
   const {
     data: { session }

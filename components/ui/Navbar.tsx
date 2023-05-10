@@ -148,8 +148,8 @@ const Navbar = ({userDetails}: Props) => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <button type='button' className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')} onClick={user ? handleLogout: handleLogin}>
-                            {userDetails ? 'Logout' : 'Login'}
+                          <button type='button' className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')} onClick={handleLogout}>
+                             Logout
                           </button>
                         )}
                       </Menu.Item>
