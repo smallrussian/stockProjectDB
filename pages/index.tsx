@@ -3,6 +3,7 @@ import LoginModal from "@/components/LoginModal";
 import { GetServerSidePropsContext } from "next/types";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { getURL } from "@/utils/helpers";
+import Link from "next/link";
 
 const LandingPage = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,6 +20,12 @@ const LandingPage = () => {
             className="bg-gray-300 text-gray-800 font-semibold px-6 py-3 rounded-md hover:bg-gray-200"
           >
             Sign In
+          </button>
+          <button
+            className="bg-gray-300 text-gray-800 font-semibold px-6 py-3 rounded-md hover:bg-gray-200"
+            type="button"
+          >
+            <Link href="/app">Go to App</Link>
           </button>
         </div>
       </div>

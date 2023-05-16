@@ -84,7 +84,7 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "github",
       options: {
-        redirectTo: `${getURL()}/app}`
+        redirectTo: `${getURL()}/app`
       }
     });
     if (error) {
