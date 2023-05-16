@@ -42,20 +42,6 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
     setIsSignUp(!isSignUp);
   };
 
-  async function signInWithGoogle() {
-    console.log("something");
-    const supabase = createBrowserSupabaseClient<Database>();
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${getURL()}/app`
-      }
-    });
-    if (error) {
-      console.error(error);
-    }
-  }
-
   const handleSignUp = async () => {
     const supabase = createBrowserSupabaseClient<Database>();
     const { error } = await supabase.auth.signUp({
@@ -150,22 +136,6 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                   Login
                 </Dialog.Title>
                 <div className="mt-2">
-                  <button
-                    type="button"
-                    onClick={signInWithGoogle}
-                    className="flex w-full px-4 mb-3 py-2 text-sm font-medium text-black border-solid border-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 hover:bg-gray-100"
-                  >
-                    <Image
-                      className="items-center"
-                      src="/google-icon.svg"
-                      alt="Google"
-                      width={20}
-                      height={20}
-                    />
-                    <div className="flex-1 justify-center text-center">
-                      <span>Continue with Google</span>
-                    </div>
-                  </button>
                   <button
                     type="button"
                     onClick={signInWithGithub}
@@ -312,22 +282,6 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                 <div className="mt-2">
                   <button
                     type="button"
-                    onClick={signInWithGoogle}
-                    className="flex w-full px-4 mb-3 py-2 text-sm font-medium text-black border-solid border-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 hover:bg-gray-100"
-                  >
-                    <Image
-                      className="items-center"
-                      src="/google-icon.svg"
-                      alt="Google"
-                      width={20}
-                      height={20}
-                    />
-                    <div className="flex-1 justify-center text-center">
-                      <span>Continue with Google</span>
-                    </div>
-                  </button>
-                  <button
-                    type="button"
                     onClick={signInWithGithub}
                     className="flex w-full px-4 py-2 mt-3 text-sm font-medium text-black border-solid border-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 hover:bg-gray-100"
                   >
@@ -340,6 +294,22 @@ const LoginModal = ({ isOpen, setIsOpen }: Props) => {
                     />
                     <div className="flex-1 justify-center text-center">
                       <span>Continue with Github</span>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={signInWithDiscord}
+                    className="flex w-full px-4 py-2 mt-3 text-sm font-medium text-black border-solid border-2 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500 hover:bg-gray-100"
+                  >
+                    <Image
+                      className="items-center"
+                      src="/discord-icon.svg"
+                      alt="Discord"
+                      width={20}
+                      height={20}
+                    />
+                    <div className="flex-1 justify-center text-center">
+                      <span>Continue with Discord</span>
                     </div>
                   </button>
                 </div>

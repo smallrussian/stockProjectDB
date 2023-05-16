@@ -21,7 +21,7 @@ const SignIn = () => {
         }}
         socialLayout="vertical"
         theme="dark"
-        redirectTo="/"
+        redirectTo="/app"
       />
     </div>
     // a coment

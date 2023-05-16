@@ -1,51 +1,45 @@
 /* eslint-disable prettier/prettier */
-import { Fragment } from 'react'
-import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
-import { Database } from '@/types/supabase'
-import { useRouter } from 'next/router'
-import { useUser } from '@/utils/useUser'
-import { UserDetails } from '@/types';
+import { Fragment } from "react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Database } from "@/types/supabase";
+import { useRouter } from "next/router";
+import { useUser } from "@/utils/useUser";
+import { UserDetails } from "@/types";
+import Image from "next/image";
 
 type Props = {
-
   userDetails: UserDetails | null;
-}
-
-
-
-
-
+};
 
 function classNames(...classes: string[]) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = ({userDetails}: Props) => {
-
-  const router = useRouter()
-  const user = useUser()
-  console.log(user)
-  const supabase = useSupabaseClient<Database>()
+const Navbar = ({ userDetails }: Props) => {
+  const router = useRouter();
+  const user = useUser();
+  console.log(user);
+  const supabase = useSupabaseClient<Database>();
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut()
-    if (error) console.log('Error logging out:', error.message)
-    console.log('loggedOut')
-    console.log(user)
-    router.push('/')
-  }
+    const { error } = await supabase.auth.signOut();
+    if (error) console.log("Error logging out:", error.message);
+    console.log("loggedOut");
+    console.log(user);
+    router.push("/");
+  };
   const handleLogin = () => {
-    console.log(user)
-    router.push('/signin')
-  }
-  
+    console.log(user);
+    router.push("/signin");
+  };
+
   const navigation = [
-    { name: 'Home', href: '/', current: false },
-    { name: 'Create Post', href: '/createPost', current: false },
-    { name: 'Profile', href: '/', current: false},
-  ]
-  
+    { name: "Home", href: "/", current: false },
+    { name: "Create Post", href: "/createPost", current: false },
+    { name: "Profile", href: "/", current: false }
+  ];
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -68,13 +62,11 @@ const Navbar = ({userDetails}: Props) => {
                     className="block h-8 w-auto lg:hidden"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Your Company"
-                    
                   />
                   <img
                     className="hidden h-8 w-auto lg:block"
                     src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
                     alt="Your Company"
-                    
                   />
                 </div>
                 <div className="hidden sm:ml-6 sm:block">
@@ -84,10 +76,12 @@ const Navbar = ({userDetails}: Props) => {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'rounded-md px-3 py-2 text-sm font-medium'
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
                         )}
-                        aria-current={item.current ? 'page' : undefined}
+                        aria-current={item.current ? "page" : undefined}
                       >
                         {item.name}
                       </a>
@@ -106,12 +100,12 @@ const Navbar = ({userDetails}: Props) => {
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative ml-3">
-                  <div className='min-h-32'>
+                  <div className="min-h-32">
                     <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                       <span className="sr-only">Open user menu</span>
-                      <img
+                      <Image
                         className="h-8 w-8 rounded-full"
-                        src={userDetails?.avatar_url}
+                        src="/default-user-profile-picture.jpg"
                         alt=""
                       />
                     </Menu.Button>
@@ -130,7 +124,10 @@ const Navbar = ({userDetails}: Props) => {
                         {({ active }) => (
                           <a
                             href="/profile"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Your Profile
                           </a>
@@ -140,7 +137,10 @@ const Navbar = ({userDetails}: Props) => {
                         {({ active }) => (
                           <a
                             href="/app"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
                           >
                             Settings
                           </a>
@@ -148,8 +148,15 @@ const Navbar = ({userDetails}: Props) => {
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <button type='button' className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')} onClick={handleLogout}>
-                             Logout
+                          <button
+                            type="button"
+                            className={classNames(
+                              active ? "bg-gray-100" : "",
+                              "block px-4 py-2 text-sm text-gray-700"
+                            )}
+                            onClick={handleLogout}
+                          >
+                            Logout
                           </button>
                         )}
                       </Menu.Item>
@@ -168,10 +175,12 @@ const Navbar = ({userDetails}: Props) => {
                   as="a"
                   href={item.href}
                   className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
                   )}
-                  aria-current={item.current ? 'page' : undefined}
+                  aria-current={item.current ? "page" : undefined}
                 >
                   {item.name}
                 </Disclosure.Button>
@@ -181,6 +190,6 @@ const Navbar = ({userDetails}: Props) => {
         </>
       )}
     </Disclosure>
-  )
-}
-export default Navbar
+  );
+};
+export default Navbar;
