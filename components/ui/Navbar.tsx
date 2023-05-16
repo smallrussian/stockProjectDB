@@ -107,6 +107,8 @@ const Navbar = ({ userDetails }: Props) => {
                         className="h-8 w-8 rounded-full"
                         src="/default-user-profile-picture.jpg"
                         alt=""
+                        width={40}
+                        height={40}
                       />
                     </Menu.Button>
                   </div>
