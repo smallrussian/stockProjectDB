@@ -25,9 +25,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (error) {
       return res.status(500).json({ error: error.message });
     }
-    res.status(200).json(portfolio);
+    return res.status(200).json(portfolio);
   }
-  if (req.body === "GET") {
+  if (req.method === "GET") {
     const { data, error } = await supabase
       .from("portfolios")
       .select("portfolio");
